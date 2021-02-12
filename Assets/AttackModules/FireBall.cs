@@ -41,7 +41,7 @@ namespace Skills
             {
                 // Release
                 baseSkillInfo.onCoolDown = false;
-                baseSkillInfo.skillObject.GetComponent<Rigidbody>().AddForce(transform.forward * 500);
+                baseSkillInfo.skillObject.GetComponent<Rigidbody>().AddForce(baseSkillInfo.skillObject.transform.forward * 500);
                 Destroy(baseSkillInfo.skillObject, 5.0f);
             }
             else if (pressing && baseSkillInfo.skillObject != null)
