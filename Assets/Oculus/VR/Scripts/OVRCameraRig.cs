@@ -109,6 +109,7 @@ public class OVRCameraRig : MonoBehaviour
 	protected Camera _centerEyeCamera;
 	protected Camera _leftEyeCamera;
 	protected Camera _rightEyeCamera;
+	protected CharacterController Controller;
 
 #region Unity Messages
 	protected virtual void Awake()
@@ -299,8 +300,15 @@ public class OVRCameraRig : MonoBehaviour
 	{
 		bool monoscopic = OVRManager.instance != null ? OVRManager.instance.monoscopic : false;
 
+        // This sets the user's camera base height and position
 		if (trackingSpace == null)
-			trackingSpace = ConfigureAnchor(null, trackingSpaceName);
+        {
+            Controller = gameObject.GetComponent<CharacterController>();
+            trackingSpace = ConfigureAnchor(null, trackingSpaceName);
+            Vector3 pos = trackingSpace.localPosition;
+            pos.y = - (0.2f * Controller.height) + Controller.center.y;
+            trackingSpace.localPosition = pos;
+        }
 
 		if (leftEyeAnchor == null)
 			leftEyeAnchor = ConfigureAnchor(trackingSpace, leftEyeAnchorName);
