@@ -2,7 +2,7 @@
 using UnityEngine;
 using Skills;
 
-public class ControllerScript : MonoBehaviour
+public class PlayerAbilities : MonoBehaviour
 {
     public List<MonoBehaviour> SkillList = new List<MonoBehaviour>();
     List<ISkill> attachedSkills = new List<ISkill>();
@@ -12,11 +12,7 @@ public class ControllerScript : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        foreach (Object skill in SkillList)
-        {
-            System.Type type = skill.GetType();
-            attachedSkills.Add(gameObject.AddComponent(skill.GetType()) as ISkill);
-        }
+        AssignSkills();
         RHand = GameObject.FindGameObjectWithTag("RightHand");
         LHand = GameObject.FindGameObjectWithTag("LeftHand");
     }
@@ -24,8 +20,8 @@ public class ControllerScript : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        PrimaryAttack(attachedSkills[0], OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch);
-        PrimaryAttack(attachedSkills[1], OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch);
+        TriggerSkill(attachedSkills[0], OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch);
+        TriggerSkill(attachedSkills[1], OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch);
 
         if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.LTouch))
         {
@@ -36,7 +32,7 @@ public class ControllerScript : MonoBehaviour
         }
     }
 
-    public void PrimaryAttack(ISkill skill, OVRInput.Button button, OVRInput.Controller controller)
+    public void TriggerSkill(ISkill skill, OVRInput.Button button, OVRInput.Controller controller)
     {
         if (OVRInput.GetDown(button, controller))
         {
@@ -52,6 +48,15 @@ public class ControllerScript : MonoBehaviour
         {
             Debug.Log("Holding Down");
             skill.InvokeSkill(true, controller);
+        }
+    }
+
+    public void AssignSkills()
+    {
+                foreach (Object skill in SkillList)
+        {
+            System.Type type = skill.GetType();
+            attachedSkills.Add(gameObject.AddComponent(skill.GetType()) as ISkill);
         }
     }
 }
