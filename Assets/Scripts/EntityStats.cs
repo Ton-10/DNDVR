@@ -4,14 +4,15 @@ using static Helper;
 
 public class EntityStats : MonoBehaviour
 {
-    public int ATK,HP,DEF,MR;
+    public int ATK,MAXHP,HP,DEF,MR;
     public StatusEffect Status;
 
     // Start is called before the first frame update
     void Start()
     {
         ATK = 5;
-        HP = 100;
+        MAXHP = 100;
+        HP = MAXHP;
         DEF = 5;
         MR = 5;
     }
