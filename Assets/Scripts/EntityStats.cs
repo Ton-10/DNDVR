@@ -4,8 +4,9 @@ using static Helper;
 
 public class EntityStats : MonoBehaviour
 {
-    public int ATK,MAXHP,HP,DEF,MR;
+    public int ATK,MAXHP,HP,DEF,MR,SPEED;
     public StatusEffect Status;
+    public bool CanAttack = true, TurnFinished = false;
 
     // Start is called before the first frame update
     void Start()

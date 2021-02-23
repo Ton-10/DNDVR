@@ -8,6 +8,7 @@ public class PlayerAbilities : MonoBehaviour
     List<ISkill> attachedSkills = new List<ISkill>();
     GameObject RHand = null;
     GameObject LHand = null;
+    EntityStats entityStats;
 
     // Start is called before the first frame update
     void Start()
@@ -15,13 +16,17 @@ public class PlayerAbilities : MonoBehaviour
         AssignSkills();
         RHand = GameObject.FindGameObjectWithTag("RightHand");
         LHand = GameObject.FindGameObjectWithTag("LeftHand");
+        entityStats = gameObject.GetComponent<EntityStats>();
     }
 
     // Update is called once per frame
     void Update()
     {
-        TriggerSkill(attachedSkills[0], OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch);
-        TriggerSkill(attachedSkills[1], OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch);
+        if (entityStats.CanAttack)
+        {
+            TriggerSkill(attachedSkills[0], OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch);
+            TriggerSkill(attachedSkills[1], OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch);
+        }
 
         if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.LTouch))
         {
