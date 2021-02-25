@@ -51,7 +51,6 @@ public class PlayerAbilities : MonoBehaviour
         }
         if (OVRInput.Get(button, controller))
         {
-            Debug.Log("Holding Down");
             skill.InvokeSkill(true, controller);
         }
     }
