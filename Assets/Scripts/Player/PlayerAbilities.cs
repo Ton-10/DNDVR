@@ -26,6 +26,7 @@ public class PlayerAbilities : MonoBehaviour
         {
             TriggerSkill(attachedSkills[0], OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.LTouch);
             TriggerSkill(attachedSkills[1], OVRInput.Button.PrimaryIndexTrigger, OVRInput.Controller.RTouch);
+            TriggerSkill(attachedSkills[2], OVRInput.Button.One, OVRInput.Controller.LTouch);
         }
 
         if (OVRInput.GetDown(OVRInput.Button.PrimaryHandTrigger, OVRInput.Controller.LTouch))

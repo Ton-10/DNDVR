@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections.Generic;
+using UnityEngine;
 namespace Skills
 {
     public class FireBall : MonoBehaviour, ISkill
@@ -10,7 +11,7 @@ namespace Skills
         {
             BaseSkillInfo =
                 new Skill(
-                    skillPrefab: Resources.Load("Prefabs/FireBall") as GameObject,
+                    skillPrefabs: new List<GameObject> { Resources.Load("Prefabs/FireBall") as GameObject },
                     rHand: GameObject.FindGameObjectWithTag("RightHand"),
                     lHand: GameObject.FindGameObjectWithTag("LeftHand"),
                     damageType: Helper.DamageType.Fire,
@@ -40,25 +41,25 @@ namespace Skills
             {
                 // Pressing
                 BaseSkillInfo.OnCoolDown = true;
-                BaseSkillInfo.SkillObject = Instantiate(BaseSkillInfo.SkillPrefab, hand.transform.position, Quaternion.identity);
+                BaseSkillInfo.SkillObjects[0] = Instantiate(BaseSkillInfo.SkillPrefabs[0], hand.transform.position, Quaternion.identity);
             }
-            else if (!pressing && BaseSkillInfo.OnCoolDown && BaseSkillInfo.SkillObject != null)
+            else if (!pressing && BaseSkillInfo.OnCoolDown && BaseSkillInfo.SkillObjects[0] != null)
             {
                 // Release
                 BaseSkillInfo.OnCoolDown = false;
-                BaseSkillInfo.SkillObject.GetComponent<Rigidbody>().AddForce(BaseSkillInfo.SkillObject.transform.forward * 500);
+                BaseSkillInfo.SkillObjects[0].GetComponent<Rigidbody>().AddForce(BaseSkillInfo.SkillObjects[0].transform.forward * 500);
 
-                DamageScript DmgScript = BaseSkillInfo.SkillObject.AddComponent<DamageScript>();
+                DamageScript DmgScript = BaseSkillInfo.SkillObjects[0].AddComponent<DamageScript>();
                 DmgScript.Attack = BaseSkillInfo.PlayerStats.ATK;
                 DmgScript.DamageType = BaseSkillInfo.DamageType;
 
-                Destroy(BaseSkillInfo.SkillObject, 10.0f);
+                Destroy(BaseSkillInfo.SkillObjects[0], 10.0f);
             }
-            else if (pressing && BaseSkillInfo.SkillObject != null)
+            else if (pressing && BaseSkillInfo.SkillObjects[0] != null)
             {
                 // Holding
-                BaseSkillInfo.SkillObject.transform.position = hand.transform.position;
-                BaseSkillInfo.SkillObject.transform.rotation = hand.transform.rotation;
+                BaseSkillInfo.SkillObjects[0].transform.position = hand.transform.position;
+                BaseSkillInfo.SkillObjects[0].transform.rotation = hand.transform.rotation;
             }
         }
     }

@@ -2019,9 +2019,20 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1599631778139137193, guid: 0353e32ffa8b477449b9beaa77ff8759,
         type: 3}
+      propertyPath: SkillList.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 1599631778139137193, guid: 0353e32ffa8b477449b9beaa77ff8759,
+        type: 3}
       propertyPath: SkillList.Array.data[1]
       value: 
       objectReference: {fileID: 910278676781677750, guid: 90ddff209768a6541ad9177728ad8b34,
+        type: 3}
+    - target: {fileID: 1599631778139137193, guid: 0353e32ffa8b477449b9beaa77ff8759,
+        type: 3}
+      propertyPath: SkillList.Array.data[2]
+      value: 
+      objectReference: {fileID: 114030612319250518, guid: dfd049e32b994d4469f9697ff5d410be,
         type: 3}
     - target: {fileID: 1599631779223282601, guid: 0353e32ffa8b477449b9beaa77ff8759,
         type: 3}
