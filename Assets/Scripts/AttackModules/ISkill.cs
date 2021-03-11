@@ -4,7 +4,9 @@ namespace Skills
 {
     public interface ISkill
     {
-        void InvokeSkill(bool pressing, OVRInput.Controller controller);
+        Skill GetSkillInfo();
+
+        void InvokeSkill(bool pressing, OVRInput.Controller controller = OVRInput.Controller.None);
     }
 }
 

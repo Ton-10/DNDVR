@@ -19,6 +19,7 @@ public class FireErupt : MonoBehaviour, ISkill
         BaseSkillInfo =
             new Skill(
                 skillPrefabs: new List<GameObject>{ Resources.Load("Prefabs/PreEruption") as GameObject, Resources.Load("Prefabs/Eruption") as GameObject },
+                user: gameObject,
                 rHand: GameObject.FindGameObjectWithTag("RightHand"),
                 lHand: GameObject.FindGameObjectWithTag("LeftHand"),
                 damageType: Helper.DamageType.Fire,
@@ -32,21 +33,35 @@ public class FireErupt : MonoBehaviour, ISkill
         
     }
 
+    public Skill GetSkillInfo()
+    {
+        return BaseSkillInfo;
+    }
+
     public void InvokeSkill(bool pressing, OVRInput.Controller controller)
     {
         GameObject hand = null;
-
-        if (controller == OVRInput.Controller.LTouch)
+        if(gameObject.CompareTag("Player"))
         {
-            hand = BaseSkillInfo.LHand;
+            if (controller == OVRInput.Controller.LTouch)
+            {
+                hand = BaseSkillInfo.LHand;
+            }
+            if (controller == OVRInput.Controller.RTouch)
+            {
+                hand = BaseSkillInfo.RHand;
+            }
         }
-        if (controller == OVRInput.Controller.RTouch)
-        {
-            hand = BaseSkillInfo.RHand;
-        }
 
-        if (pressing && !BaseSkillInfo.OnCoolDown)
+        // Bypass Player Logic If skill used by enemy
+        if (gameObject.CompareTag("Enemy"))
         {
+            hand = gameObject;
+            ReleaseErupt();
+        }
+        else if (pressing && !BaseSkillInfo.OnCoolDown)
+        {
+            Debug.Log("Started Eruption!");
             // Pressing
             BaseSkillInfo.OnCoolDown = true;
 
@@ -64,56 +79,15 @@ public class FireErupt : MonoBehaviour, ISkill
 
             lineRenderer.SetPositions(Arraywithpositions);
         }
-        else if (!pressing && BaseSkillInfo.OnCoolDown && lineRenderer != null)
+        else if ((!pressing && BaseSkillInfo.OnCoolDown && lineRenderer != null))
         {
             // Release
-            BaseSkillInfo.OnCoolDown = false;
-            RaycastHit initialHit;
-
-            if (BaseSkillInfo.TargetEnemy != null)
-            {
-                Physics.Raycast(
-                    BaseSkillInfo.TargetEnemy.transform.localPosition, 
-                    BaseSkillInfo.TargetEnemy.transform.TransformDirection(Vector3.down), 
-                    out initialHit, 
-                    50f);
-                Target = initialHit.point;
-
-                StartCoroutine(DamageAfterTime(0.5f));
-            }
-            else
-            {
-                Target = BaseSkillInfo.RayTarget.point;
-            }
-
-            // Eruption Base Effect
-            BaseSkillInfo.SkillObjects[0] = Instantiate(
-                BaseSkillInfo.SkillPrefabs[0],
-                Target + new Vector3(0, BaseSkillInfo.SkillPrefabs[0].transform.localScale.y, 0),
-                Quaternion.identity);
-
-            // Eruption Pillar
-            BaseSkillInfo.SkillObjects[1] = Instantiate(
-                BaseSkillInfo.SkillPrefabs[1],
-                Target + new Vector3(0,-BaseSkillInfo.SkillPrefabs[1].transform.localScale.y,0), 
-                Quaternion.identity);
-
-            Destroy(lineRenderer);
-
-            // Move Pillar Up
-            Vector3 targetPos = Target + new Vector3(0, 12, 0);
-            BaseSkillInfo.SkillObjects[1].AddComponent<Move>().SetValues(
-                new[] { targetPos, targetPos + new Vector3(0, 6, 0)},
-                new[] { 0.001f, 0.005f },
-                new[] { 0.5f, 0.5f });
-
-            BaseSkillInfo.TargetEnemy = null;
-
-            Destroy(BaseSkillInfo.SkillObjects[0], 1f);
+            ReleaseErupt();
         }
         else if (pressing && lineRenderer != null)
         {
             // Holding
+            Debug.Log("Holding Eruption!");
             Physics.Raycast(hand.transform.position, hand.transform.TransformDirection(Vector3.forward), out TempTarget, 1000f);
             BaseSkillInfo.SetEnemy(TempTarget);
 
@@ -144,13 +118,59 @@ public class FireErupt : MonoBehaviour, ISkill
             return obj;
         }
     }
+    public void ReleaseErupt()
+    {
+        BaseSkillInfo.OnCoolDown = false;
+        RaycastHit initialHit;
 
+        if (BaseSkillInfo.TargetEnemy != null)
+        {
+            Physics.Raycast(
+                BaseSkillInfo.TargetEnemy.transform.localPosition,
+                BaseSkillInfo.TargetEnemy.transform.TransformDirection(Vector3.down),
+                out initialHit,
+                50f);
+            Target = initialHit.point;
+
+            StartCoroutine(DamageAfterTime(0.5f));
+        }
+        else
+        {
+            Target = BaseSkillInfo.RayTarget.point;
+        }
+
+        // Eruption Base Effect
+        BaseSkillInfo.SkillObjects[0] = Instantiate(
+            BaseSkillInfo.SkillPrefabs[0],
+            Target + new Vector3(0, BaseSkillInfo.SkillPrefabs[0].transform.localScale.y, 0),
+            Quaternion.identity);
+
+        // Eruption Pillar
+        BaseSkillInfo.SkillObjects[1] = Instantiate(
+            BaseSkillInfo.SkillPrefabs[1],
+            Target + new Vector3(0, -BaseSkillInfo.SkillPrefabs[1].transform.localScale.y, 0),
+            Quaternion.identity);
+
+        Destroy(lineRenderer);
+
+        // Move Pillar Up
+        Vector3 targetPos = Target + new Vector3(0, 12, 0);
+        BaseSkillInfo.SkillObjects[1].AddComponent<Move>().SetValues(
+            new[] { targetPos, targetPos + new Vector3(0, 6, 0) },
+            new[] { 0.001f, 0.005f },
+            new[] { 0.5f, 0.5f });
+
+        BaseSkillInfo.TargetEnemy = null;
+
+        Destroy(BaseSkillInfo.SkillObjects[0], 1f);
+    }
     IEnumerator DamageAfterTime(float time)
     {
         EntityStats enemyStats = BaseSkillInfo.TargetEnemy.GetComponent<EntityStats>();
 
         yield return new WaitForSeconds(time);
 
+        Debug.Log($"Damaging {BaseSkillInfo.TargetEnemy}");
         enemyStats.TakeDamage(BaseSkillInfo.PlayerStats.ATK, BaseSkillInfo.DamageType);
     }
 }

@@ -1,10 +1,10 @@
-﻿using System;
+﻿
 using UnityEngine;
 using static Helper;
 
 public class EntityStats : MonoBehaviour
 {
-    public int ATK,MAXHP,HP,DEF,MR,SPEED;
+    public int ATK,MAXHP,HP,DEF,MR,SPEED,AP;
     public StatusEffect Status;
     public bool CanAttack = true, TurnFinished = false;
 
@@ -16,6 +16,7 @@ public class EntityStats : MonoBehaviour
         HP = MAXHP;
         DEF = 5;
         MR = 5;
+        AP = 1;
     }
 
     // Update is called once per frame

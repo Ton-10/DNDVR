@@ -5,6 +5,7 @@ public class DamageScript : MonoBehaviour
 {
     public int Attack;
     public DamageType DamageType;
+    public string TargetTag;
 
     // Start is called before the first frame update
     void Start()
@@ -22,14 +23,14 @@ public class DamageScript : MonoBehaviour
     {
         ContactPoint contact = collision.contacts[0];
         GameObject enemy = contact.otherCollider.gameObject;
-        if (enemy.CompareTag("Enemy"))
+        if (enemy.CompareTag(TargetTag))
         {
             EntityStats enemyStats = enemy.GetComponent<EntityStats>();
             enemyStats.TakeDamage(Attack, DamageType);
         }
         else
         {
-            Debug.Log("Hit non Enemy");
+            Debug.Log("Hit non target");
         }
         Destroy(gameObject);
     }

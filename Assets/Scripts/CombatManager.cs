@@ -48,12 +48,18 @@ public class CombatManager : MonoBehaviour
             {
                 CurrentActor.GetComponent<OVRPlayerController>().EnableLinearMovement = currentActorStats.CanAttack;
             }
-            
+            if (CurrentActor.CompareTag("Enemy"))
+            {
+                CurrentActor.GetComponent<EnemyAbilities>().StartAttack(Players);
+            }
+
 
             if (CurrentActor.GetComponent<EntityStats>().TurnFinished)
             {
                 currentActorStats.TurnFinished = false;
                 currentActorStats.CanAttack = false;
+
+                Debug.Log($"{CurrentActor} finished their turn!");
 
                 if (CurrentActor.CompareTag("Player"))
                 {
