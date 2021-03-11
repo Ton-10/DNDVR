@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FireErupt : MonoBehaviour, ISkill
+public class EarthErupt : MonoBehaviour, ISkill
 {
     public Skill BaseSkillInfo;
 
@@ -18,11 +18,11 @@ public class FireErupt : MonoBehaviour, ISkill
     {
         BaseSkillInfo =
             new Skill(
-                skillPrefabs: new List<GameObject> { Resources.Load("Prefabs/FirePreEruption") as GameObject, Resources.Load("Prefabs/FireEruption") as GameObject },
+                skillPrefabs: new List<GameObject> { Resources.Load("Prefabs/EarthPreEruption") as GameObject, Resources.Load("Prefabs/EarthEruption") as GameObject },
                 user: gameObject,
                 rHand: GameObject.FindGameObjectWithTag("RightHand"),
                 lHand: GameObject.FindGameObjectWithTag("LeftHand"),
-                damageType: Helper.DamageType.Fire,
+                damageType: Helper.DamageType.Earth,
                 playerStats: gameObject.GetComponent<EntityStats>()
             );
     }
@@ -30,7 +30,7 @@ public class FireErupt : MonoBehaviour, ISkill
     // Update is called once per frame
     void Update()
     {
-        
+
     }
 
     public Skill GetSkillInfo()
@@ -41,7 +41,7 @@ public class FireErupt : MonoBehaviour, ISkill
     public void InvokeSkill(bool pressing, OVRInput.Controller controller)
     {
         GameObject hand = null;
-        if(gameObject.CompareTag("Player"))
+        if (gameObject.CompareTag("Player"))
         {
             if (controller == OVRInput.Controller.LTouch)
             {
@@ -101,7 +101,7 @@ public class FireErupt : MonoBehaviour, ISkill
     public GameObject makeSphere(Vector3 center, float diameter, GameObject sphere = null)
     {
         GameObject obj = null;
-        if(sphere == null)
+        if (sphere == null)
         {
             obj = GameObject.CreatePrimitive(PrimitiveType.Sphere);
             obj.transform.localScale = new Vector3(diameter, diameter, diameter);

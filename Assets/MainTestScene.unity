@@ -240,6 +240,7 @@ MonoBehaviour:
   DEF: 5
   MR: 5
   SPEED: 2
+  AP: 0
   Status: 0
   CanAttack: 1
   TurnFinished: 0
@@ -451,6 +452,7 @@ MonoBehaviour:
   DEF: 5
   MR: 5
   SPEED: 4
+  AP: 0
   Status: 0
   CanAttack: 1
   TurnFinished: 0
@@ -1079,6 +1081,7 @@ MonoBehaviour:
   DEF: 5
   MR: 5
   SPEED: 2
+  AP: 0
   Status: 0
   CanAttack: 1
   TurnFinished: 0
@@ -1847,6 +1850,7 @@ MonoBehaviour:
   DEF: 3
   MR: 2
   SPEED: 1
+  AP: 0
   Status: 0
   CanAttack: 1
   TurnFinished: 0
