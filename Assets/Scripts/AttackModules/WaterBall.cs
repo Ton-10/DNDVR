@@ -62,7 +62,7 @@ namespace Skills
             else if (!pressing && BaseSkillInfo.OnCoolDown && BaseSkillInfo.SkillObjects[0] != null)
             {
                 // Release
-               
+                ReleaseWaterBall();
             }
             else if (pressing && BaseSkillInfo.SkillObjects[0] != null)
             {
